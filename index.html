@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snoopy , o Ás voador</title>
+    <link rel="shortcut icon" href="imagens/snoopy1.png"> 
+    <style>
+        canvas {
+            border: 1px solid gray;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            cursor: pointer;
+        }
+        </style>
+
+</head>
+<body>
+    <canvas id="jogo" width="900" height="500"></canvas>
+
+    <script>
+                  
+            class Sprite {
+            constructor(x, y, largura, altura, imagem) {
+                this.x = x;
+                this.y = y;
+                this.largura = largura;
+                this.altura = altura;
+                this.imagem = imagem;
+                
+            }
+
+            desenha(ctx) {
+                if (this.imagem) {
+                    
+                    ctx.drawImage(this.imagem, this.x, this.y, this.largura, this.altura);
+                } else {
+                    ctx.strokeStyle = 'red';
+                    ctx.strokeRect(this.x, this.y, this.largura, this.altura);
+                }
+            }
+        }
+
+        let canvasEl = document.querySelector('#jogo');
+        let ctx = canvasEl.getContext('2d');
+        ctx.imageSmoothingEnabled = false;
+        
+        let imagembarao= new Image();
+        imagembarao.src = 'imagens/barao.png';
+    
+
+        let imagembackground= new Image();
+        imagembackground.src = 'imagens/snoopyf.jpg';
+        let background = new Sprite(0,0,900,500,imagembackground);
+
+        let imagemSnoopy = new Image();
+        imagemSnoopy.src = 'imagens/snoopy3.png';
+        let Snoopy = new Sprite(50, 50, 90, 90, imagemSnoopy);
+        
+        let barao = [];
+        let tiro =[];
+        barao.push(new Sprite(700, 150, 40, 40,imagembarao));
+        barao.push(new Sprite(820, 190, 40, 40,imagembarao));
+        barao.push(new Sprite(840, 120, 40, 40,imagembarao));
+        barao.push(new Sprite(780, 150, 40, 40,imagembarao));
+        barao.push(new Sprite(700, 400, 40, 40,imagembarao));
+        barao.push(new Sprite(820, 340, 40, 40,imagembarao));
+        barao.push(new Sprite(740, 320, 40, 40,imagembarao));
+        barao.push(new Sprite(780, 280, 40, 40,imagembarao));
+        
+        
+        imagemSnoopy.addEventListener('load', (evento) => {
+            desenhaJogo();
+        });
+        
+        
+        canvasEl.addEventListener('mousemove', (evento) => {
+            Snoopy.x = evento.offsetX - Snoopy.largura/2;
+            Snoopy.y = evento.offsetY - Snoopy.altura/2;
+            
+        });
+        
+        document.body.addEventListener('keydown', e =>{
+            if(e.key===' '){
+            
+            
+                tiro.push(new Sprite(700, 150, 5, 5));
+                tiro.push(new Sprite(820, 190, 5, 5));
+                tiro.push(new Sprite(840, 120, 5, 5));
+                tiro.push(new Sprite(780, 150, 5, 5));
+                tiro.push(new Sprite(700, 400, 5, 5));
+                tiro.push(new Sprite(820, 340, 5, 5));
+                tiro.push(new Sprite(740, 320, 5, 5));
+                tiro.push(new Sprite(780, 280, 5, 5));
+        }});
+        
+        function desenhaJogo() {
+            setInterval(() =>{
+        
+            
+            ctx.clearRect(0, 0, 700, 280);
+            background.desenha(ctx);
+            Snoopy.desenha(ctx);
+            for (let pew of tiro) {
+                pew.x-=5;
+            }
+            for (let pew of tiro){
+                pew.desenha(ctx);
+            }
+         
+            for (let baraovermelho of barao) {
+                baraovermelho.desenha(ctx);
+            }
+
+            },33)
+        }
+        
+    </script>
+ <h3> Aperte espaço para atirar</h3>
+
+ 
+</body>
+</html>
